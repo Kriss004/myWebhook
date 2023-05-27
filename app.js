@@ -15,8 +15,8 @@ import fs from 'fs';
 import request from 'request';
 import express from 'express';
 //import sampledataRouter from './routes/sample_data.js';
-import pkg from 'body-parser';
-const { urlencoded, json } = pkg;
+//import pkg from 'body-parser';
+//const { urlencoded, json } = pkg;
 
 const app = express();
 var server = http.createServer(app);
@@ -28,15 +28,18 @@ app.use(express.static('public'));
 
 
 
-app.use(urlencoded({ extended: false }));
+//app.use(urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true}));
+
+app.use(express.json());
+//app.use(json());
 
 
-app.use(json());
-
-
-/*app.get('/', function (_req, res) {
-  res.sendFile(`${__dirname}/index.html`);
-});*/
+app.get('/', function (_req, res) {
+  //res.sendFile(`${__dirname}/index.html`);
+  let challenge = _req.query['hub.challenge'];
+  res.send(challenge);
+});
 
 
 
@@ -58,7 +61,8 @@ app.get('/webhook', (req, res) => {
     if (mode === 'subscribe' && token === VERIFY_TOKEN) {
 
       // Responds with the challenge token from the request
-      console.log('WEBHOOK_VERIFIED');
+      console.log(`WEBHOOK_VERIFIED. Challenge: ${challenge} `);
+      res.send(challenge);
       res.status(200).send(challenge);
 
     } else {
@@ -88,6 +92,7 @@ app.post('/webhook', (req, res) => {
 
       if (webhookEvent.message) {
         handleMessage(senderPsid, webhookEvent.message);
+        console.log('Message is: ' + webhookEvent.message);
       } else if (webhookEvent.postback) {
         handlePostback(senderPsid, webhookEvent.postback);
       }
@@ -110,9 +115,9 @@ function handleMessage(senderPsid, receivedMessage) {
   if (receivedMessage.text) {
     
     response = {
-      'text': `You sent the message: '${receivedMessage.text}'. Now send me an attachment!`
+      'text': 'You sent the message: ' + receivedMessage.text
     };
-    console.log(`You received the following message: ${receivedMessage.text}`);
+    console.log('You received the following message: ' + receivedMessage.text);
     
   } else if (receivedMessage.attachments) {
 
