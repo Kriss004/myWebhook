@@ -1,15 +1,15 @@
-'use strict';
+
 
 // Use dotenv to read .env vars into Node
 
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({path:"C:\Users\User\bot\.env"});
 
-//const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-//const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
+const APP_TOKEN = process.env.APP_TOKEN;
+const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
-import tokens from './config/tokens';
-import https from 'https';
+//import tokens from './config/tokens';
+//import https from 'https';
 import http from 'http';
 import fs from 'fs';
 import request from 'request';
@@ -34,9 +34,9 @@ app.use(urlencoded({ extended: false }));
 app.use(json());
 
 
-app.get('/', function (_req, res) {
+/*app.get('/', function (_req, res) {
   res.sendFile(`${__dirname}/index.html`);
-});
+});*/
 
 
 
@@ -55,7 +55,7 @@ app.get('/webhook', (req, res) => {
   if (mode && token) {
 
     // Checks the mode and token sent is correct
-    if (mode === 'subscribe' && token === tokens.VERIFY_TOKEN) {
+    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
 
       // Responds with the challenge token from the request
       console.log('WEBHOOK_VERIFIED');
@@ -181,7 +181,7 @@ function callSendAPI(senderPsid, response) {
   
   request({
     'uri': 'https://graph.facebook.com/v2.6/me/messages',
-    'qs': { 'access_token': tokens.APP_TOKEN },
+    'qs': { 'access_token': APP_TOKEN },
     'method': 'POST',
     'json': requestBody
   }, (err, _res, _body) => {
