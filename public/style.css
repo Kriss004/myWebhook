@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background: #f7f8fc;
+    color:rgb(51, 22, 51);
+}
+h2 {
+    text-align: center;
+    margin-top: 3rem;
+}
+main {
+    text-align: center;
+}
+form {
+    width: 50%;
+    margin: 3rem auto;
+}
+input, button {
+    height: 3rem;
+    width: 80%;
+    padding: 0.5rem;
+    margin: .5rem 0;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+button {
+    background:rgb(51, 22, 51);
+    color: #ccc;
+    cursor: pointer;
+}
