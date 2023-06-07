@@ -1,119 +1,53 @@
-
-
 // Use dotenv to read .env vars into Node
 
 import dotenv from 'dotenv';
-dotenv.config({path:"C:\Users\User\bot\.env"});
+dotenv.config();
 
 const APP_TOKEN = process.env.APP_TOKEN;
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
 //import tokens from './config/tokens';
 //import https from 'https';
-import http from 'http';
-import fs from 'fs';
+//import http from 'http';
+//import fs from 'fs';
 import request from 'request';
 import express from 'express';
+import controller from './controller.js';
 //import sampledataRouter from './routes/sample_data.js';
-//import pkg from 'body-parser';
-//const { urlencoded, json } = pkg;
+import bodyParser from 'body-parser';
+const {urlencoded, json} = bodyParser;
+
 
 const app = express();
-var server = http.createServer(app);
-server.listen(process.env.ALWAYSDATA_HTTPD_PORT, process.env.ALWAYSDATA_HTTPD_IP, function(){
-  console.log("Server is started");
+
+//app.use(express.static('public'));
+
+app.use(urlencoded({ extended: true }));
+//app.use(express.urlencoded({ extended: true}));
+app.use(json());
+//app.use(express.json());
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
 });
 
-app.use(express.static('public'));
+let router = express.Router();
+let initWebRoutes = (app) => {
+  router.get("/", controller.test);
 
+  router.get("/webhook", controller.getWebhook);
+  router.post("/webhook", controller.postWebhook);
 
+  return app.use("/", router);
+};
 
-//app.use(urlencoded({ extended: true }));
-app.use(express.urlencoded({ extended: true}));
-
-app.use(express.json());
-//app.use(json());
-
-
-app.get('/', function (_req, res) {
-  //res.sendFile(`${__dirname}/index.html`);
-  let challenge = _req.query['hub.challenge'];
-  res.send(challenge);
-});
-
-
-
-// Adds support for GET requests to our webhook
-app.get('/webhook', (req, res) => {
-
-
-  //const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
-  
-  // Parse the query params
-  let mode = req.query['hub.mode'];
-  let token = req.query['hub.verify_token'];
-  let challenge = req.query['hub.challenge'];
-
-  // Checks if a token and mode is in the query string of the request
-  if (mode && token) {
-
-    // Checks the mode and token sent is correct
-    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-
-      // Responds with the challenge token from the request
-      console.log(`WEBHOOK_VERIFIED. Challenge: ${challenge} `);
-      res.send(challenge);
-      res.status(200).send(challenge);
-
-    } else {
-      // Responds with '403 Forbidden' if verify tokens do not match
-      res.sendStatus(403);
-    }
-  }
-});
-
-
-app.post('/webhook', (req, res) => {
-  console.log(req.body)
-
- 
-  if (body.object === 'page') {
-
-   
-    body.entry.forEach(function(entry) {
-
-    
-      let webhookEvent = entry.messaging[0];
-      console.log(webhookEvent);
-
-    
-      let senderPsid = webhookEvent.sender.id;
-      console.log('Sender PSID: ' + senderPsid);
-
-      if (webhookEvent.message) {
-        handleMessage(senderPsid, webhookEvent.message);
-        console.log('Message is: ' + webhookEvent.message);
-      } else if (webhookEvent.postback) {
-        handlePostback(senderPsid, webhookEvent.postback);
-      }
-    });
-
-    
-    res.status(200).send('EVENT_RECEIVED');
-  } else {
-
-  
-    res.sendStatus(404);
-  }
-});
-
+initWebRoutes(app);
 
 function handleMessage(senderPsid, receivedMessage) {
   let response;
 
-  
   if (receivedMessage.text) {
-    
     response = {
       'text': 'You sent the message: ' + receivedMessage.text
     };
@@ -152,7 +86,6 @@ function handleMessage(senderPsid, receivedMessage) {
  
   callSendAPI(senderPsid, response);
 };
-
 
 function handlePostback(senderPsid, receivedPostback) {
   let response;
@@ -198,14 +131,13 @@ function callSendAPI(senderPsid, response) {
   });
 };
 
-const options = {
-  key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('csr.pem')
+export default {
+  initWebRoutes: initWebRoutes,
+  handleMessage: handleMessage,
+  handlePostback: handlePostback,
+  callSendAPI: callSendAPI
 };
 
-var ip = process.env.IP,
-    PORT = process.env.PORT || 1337;
-
-    app.listen(PORT, console.log(`Bot is running!!!`));
-
-//https.createServer(options, app).listen(ip, PORT, console.log(`Bot is running on Port ${PORT}!!!`));
+var listener = app.listen(process.env.PORT, function() {
+  console.log('Your app is listening on port ' + listener.address().port );
+});
