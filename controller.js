@@ -13,11 +13,12 @@ const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 const app = express();
 
 app.use(json());
-app.use(urlencoded());
+app.use(urlencoded({ extended: true }));
 
+app.use(express.static('public'));
 
 let test = (req, res) => {
-    res.send("Hello again");
+    res.sendFile('index.html');
 }
 
 let getWebhook = (req, res) => {

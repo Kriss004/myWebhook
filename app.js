@@ -10,7 +10,9 @@ const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 //import https from 'https';
 //import http from 'http';
 //import fs from 'fs';
-import request from 'request';
+//import request from 'request';
+import axios from 'axios';
+import path from 'path';
 import express from 'express';
 import controller from './controller.js';
 //import sampledataRouter from './routes/sample_data.js';
@@ -20,7 +22,7 @@ const {urlencoded, json} = bodyParser;
 
 const app = express();
 
-//app.use(express.static('public'));
+app.use(express.static('public'));
 
 app.use(urlencoded({ extended: true }));
 //app.use(express.urlencoded({ extended: true}));
@@ -104,10 +106,6 @@ function handlePostback(senderPsid, receivedPostback) {
 };
 
 function callSendAPI(senderPsid, response) {
-
-
-  //const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-  
   
   let requestBody = {
     'recipient': {
@@ -115,9 +113,17 @@ function callSendAPI(senderPsid, response) {
     },
     'message': response
   };
-
   
-  request({
+
+  axios.post('https://graph.facebook.com/v2.6/me/messages?access_token=' + APP_TOKEN, requestBody)
+    .then(() => {
+      console.log('Message sent!');
+    })
+    .catch(error => {
+      console.error('Unable to send message:', error);
+    });
+  
+  /*request({
     'uri': 'https://graph.facebook.com/v2.6/me/messages',
     'qs': { 'access_token': APP_TOKEN },
     'method': 'POST',
@@ -128,7 +134,7 @@ function callSendAPI(senderPsid, response) {
     } else {
       console.error('Unable to send message:' + err);
     }
-  });
+  });*/
 };
 
 export default {
