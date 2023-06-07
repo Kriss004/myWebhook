@@ -49,7 +49,7 @@ initWebRoutes(app);
 function handleMessage(senderPsid, receivedMessage) {
   let response;
 
-  if (receivedMessage.text) {
+  /*if (receivedMessage.text) {
     response = {
       'text': 'You sent the message: ' + receivedMessage.text
     };
@@ -83,7 +83,7 @@ function handleMessage(senderPsid, receivedMessage) {
         }
       }
     };
-  }
+  }*/
 
  
   callSendAPI(senderPsid, response);
