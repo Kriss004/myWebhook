@@ -19,7 +19,7 @@ app.use(express.static('public'));
 
 let test = (req, res) => {
     res.sendFile('index.html');
-}
+};
 
 let getWebhook = (req, res) => {
 
@@ -47,7 +47,6 @@ let getWebhook = (req, res) => {
         }
     }
 };
-
 
 let postWebhook = (req, res) => {
 
@@ -90,8 +89,18 @@ let postWebhook = (req, res) => {
 
 };
 
+let getForm = (req, res) => {
+    res.render('messages');
+};
+
+let postForm = (req, res) => {
+    let sql = `INSERT INTO messages()`
+};
+
 export default {
     test: test,
     getWebhook: getWebhook,
-    postWebhook: postWebhook
+    postWebhook: postWebhook,
+    getForm: getForm,
+    postForm: postForm
 };

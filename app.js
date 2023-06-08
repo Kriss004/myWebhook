@@ -17,6 +17,7 @@ import express from 'express';
 import controller from './controller.js';
 //import sampledataRouter from './routes/sample_data.js';
 import bodyParser from 'body-parser';
+import db from './database.js';
 const {urlencoded, json} = bodyParser;
 
 
@@ -35,11 +36,15 @@ app.use((err, req, res, next) => {
 });
 
 let router = express.Router();
+
 let initWebRoutes = (app) => {
   router.get("/", controller.test);
 
   router.get("/webhook", controller.getWebhook);
   router.post("/webhook", controller.postWebhook);
+
+  router.get('/form', controller.getForm);
+  router.post('/create', controller.postForm);
 
   return app.use("/", router);
 };

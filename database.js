@@ -1,13 +1,13 @@
-/*import mysql from 'mysql';
+import mysql from 'mysql';
 
-var connection = mysql.createConnection({
-    host : 'localhost',
-    database : 'testing',
+var conn = mysql.createConnection({
+    host : 'mysql-bomabot.alwaysdata.net',
+    database : 'bomabot_mysql',
     user : 'root',
     password : ''
 })
 
-connection.connect(function(error){
+conn.connect(function(error){
     if(error){
         throw error;
     } else {
@@ -15,6 +15,6 @@ connection.connect(function(error){
     }
 });
 
-export default database;
+export default conn;
 
-module.exports = connection;*/
+//module.exports = conn;
