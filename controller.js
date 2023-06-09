@@ -30,7 +30,6 @@ let getWebhook = (req, res) => {
     let mode = req.query['hub.mode'];
     let token = req.query['hub.verify_token'];
     let challenge = req.query['hub.challenge'];
-    let challenge1 = req.body['hub.challenge'];
 
     if (mode && token) {
 
@@ -39,7 +38,6 @@ let getWebhook = (req, res) => {
             console.log(`WEBHOOK_VERIFIED. Challenge: ${challenge} `);
             res.send(challenge);
             res.status(200).send(challenge);
-            res.send(challenge1);
 
         } else {
             res.sendStatus(403);
