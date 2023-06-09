@@ -1,10 +1,10 @@
 import mysql from 'mysql';
 
 var conn = mysql.createConnection({
-    host : 'mysql-bomabot.alwaysdata.net',
-    database : 'bomabot_mysql',
-    user : 'root',
-    password : ''
+    host : process.env.MYSQL_HOST,
+    database : process.env.MYSQL_DATABASE,
+    user : process.env.MYSQL_USER,
+    password : process.env.MYSQL_PASSWORD
 })
 
 conn.connect(function(error){

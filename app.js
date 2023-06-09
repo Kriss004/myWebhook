@@ -18,6 +18,7 @@ import controller from './controller.js';
 //import sampledataRouter from './routes/sample_data.js';
 import bodyParser from 'body-parser';
 import db from './database.js';
+import conn from './database.js';
 const {urlencoded, json} = bodyParser;
 
 
@@ -43,9 +44,6 @@ let initWebRoutes = (app) => {
   router.get("/webhook", controller.getWebhook);
   router.post("/webhook", controller.postWebhook);
 
-  router.get('/form', controller.getForm);
-  router.post('/create', controller.postForm);
-
   return app.use("/", router);
 };
 
@@ -53,6 +51,17 @@ initWebRoutes(app);
 
 function handleMessage(senderPsid, receivedMessage) {
   let response;
+
+  if (receivedMessage.text) {
+    const sql = 'INSERT INTO messages (sender_psid, message) VALUES (?, ?)';
+    const values = [senderPsid, receivedMessage];
+
+    conn.query(sql, values, (err, result) => {
+      if (err) throw err;
+
+      res.send('Message received and added to the database successfully!!!');
+    })
+  };
 
   /*if (receivedMessage.text) {
     response = {
@@ -91,7 +100,7 @@ function handleMessage(senderPsid, receivedMessage) {
   }*/
 
  
-  callSendAPI(senderPsid, response);
+  //callSendAPI(senderPsid, response);
 };
 
 function handlePostback(senderPsid, receivedPostback) {

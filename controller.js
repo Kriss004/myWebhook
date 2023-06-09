@@ -89,18 +89,9 @@ let postWebhook = (req, res) => {
 
 };
 
-let getForm = (req, res) => {
-    res.render('messages');
-};
-
-let postForm = (req, res) => {
-    let sql = `INSERT INTO messages()`
-};
 
 export default {
     test: test,
     getWebhook: getWebhook,
-    postWebhook: postWebhook,
-    getForm: getForm,
-    postForm: postForm
+    postWebhook: postWebhook
 };
