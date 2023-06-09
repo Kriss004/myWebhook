@@ -100,7 +100,7 @@ let postWebhook = (req, res) => {
         });
 
 
-        res.status(200).send('EVENT_RECEIVED');
+        res.status(200);
     } else {
 
 
