@@ -31,7 +31,9 @@ let getWebhook = (req, res) => {
     let token = req.query['hub.verify_token'];
     let challenge = req.query['hub.challenge'];
 
-    if (mode && token) {
+    res.sendStatus(200).send(challenge);
+
+    /*if (mode && token) {
 
         if (mode === 'subscribe' && token === VERIFY_TOKEN) {
 
@@ -42,7 +44,7 @@ let getWebhook = (req, res) => {
         } else {
             res.sendStatus(403);
         }
-    }
+    }*/
 };
 
 let postWebhook = (req, res) => {
