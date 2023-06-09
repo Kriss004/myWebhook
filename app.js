@@ -56,10 +56,10 @@ function handleMessage(senderPsid, receivedMessage) {
     const sql = 'INSERT INTO messages (sender_psid, message) VALUES (?, ?)';
     const values = [senderPsid, receivedMessage.text];
 
-    conn.query(sql, values, (err, result) => {
+    conn.query(sql, values, (err, res) => {
       if (err) throw err;
 
-      res.send('Message received and added to the database successfully!!!');
+      console.log('Message received and added to the database successfully!!!');
     })
   };
 
