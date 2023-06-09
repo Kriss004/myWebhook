@@ -3,6 +3,7 @@ dotenv.config();
 import express from 'express';
 import main from './app.js';
 import bodyParser from 'body-parser';
+import axios from 'axios';
 
 const {urlencoded, json} = bodyParser;
 
@@ -42,9 +43,32 @@ let getWebhook = (req, res) => {
             res.sendStatus(403);
         }
     };
+    // Construct the API endpoint
+    const apiEndpoint = `https://graph.facebook.com/v13.0/me/subscribed_apps?access_token=${process.env.APP_TOKEN}`;
+
+    // Construct the POST request payload
+    const payload = {
+        object: 'page',
+        callback_url: 'https://bomatext.herokuapp.com/webhook',
+        fields: ['messages', 'messaging_postbacks', 'messaging_optins'],
+        verify_token: 'myverifytoken'
+    };
+
+    // Send the POST request
+    axios.post(apiEndpoint, payload)
+        .then(response => {
+            console.log('Webhook registered successfully.');
+        })
+        .catch(error => {
+            console.error('Failed to register webhook. Error:', error.response.data);
+        });
 };
 
 let postWebhook = (req, res) => {
+
+
+
+    
 
     console.log(`Received a ${req.method} request for ${req.url}`);
     console.log(`Request body: ${JSON.stringify(req.body)}`);
