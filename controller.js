@@ -45,7 +45,6 @@ let getWebhook = (req, res) => {
         if (mode === 'subscribe' && token === process.env.VERIFY_TOKEN) {
 
             console.log(`WEBHOOK_VERIFIED. Challenge: ${challenge} `);
-            res.send(challenge);
             res.status(200).send(challenge);
 
         } else {
