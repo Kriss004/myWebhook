@@ -62,7 +62,15 @@ let getWebhook = (req, res) => {
         .catch(error => {
             console.error('Failed to register webhook. Error:', error.response.data);
         });
-};
+    
+    axios.get(`https://graph.facebook.com/v13.0/123518010730211/subscribed_apps?access_token=${process.env.APP_TOKEN}`)
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error('Failed to get subscription. Error:', error.response.data);
+        });
+    };
 
 let postWebhook = (req, res) => {
 
