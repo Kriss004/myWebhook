@@ -117,9 +117,14 @@ let postWebhook = (req, res) => {
 
 };
 
+let privacy = (req, res) => {
+
+};
+
 
 export default {
     test: test,
     getWebhook: getWebhook,
-    postWebhook: postWebhook
+    postWebhook: postWebhook,
+    privacy: privacy
 };
