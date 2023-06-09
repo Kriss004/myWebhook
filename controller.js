@@ -18,7 +18,8 @@ app.use(urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 let test = (req, res) => {
-    res.sendFile('index.ejs');
+    //res.sendFile('index.ejs');
+    res.send('Hello World!');
 };
 
 let getWebhook = (req, res) => {
