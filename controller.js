@@ -50,7 +50,7 @@ let getWebhook = (req, res) => {
     const payload = {
         object: 'page',
         callback_url: 'https://bomatext.herokuapp.com/webhook',
-        fields: ['messages', 'messaging_postbacks', 'messaging_optins'],
+        subscribed_fields: ['messages', 'messaging_postbacks', 'messaging_optins'],
         verify_token: 'myverifytoken'
     };
 
