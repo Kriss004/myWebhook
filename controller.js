@@ -31,14 +31,14 @@ let getWebhook = (req, res) => {
     let token = req.query['hub.verify_token'];
     let challenge = req.query['hub.challenge'];
 
-    //res.send(challenge);
+    res.send(challenge);
 
-    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+    /*if (mode === 'subscribe' && token === VERIFY_TOKEN) {
         console.log(`WEBHOOK_VERIFIED. Challenge: ${challenge} `);
         res.send(challenge);
     } else {
         res.sendStatus(403);
-    }
+    }*/
 
     /*if (mode && token) {
 
