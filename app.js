@@ -51,6 +51,8 @@ let initWebRoutes = (app) => {
 
 initWebRoutes(app);
 
+const messagecache = {};
+
 function handleMessage(senderPsid, receivedMessage) {
   //let response;
 
@@ -66,6 +68,11 @@ function handleMessage(senderPsid, receivedMessage) {
       .catch(error => {
         console.error(error);
       });
+
+    if (messagecache[senderPsid + receivedMessage.text]) {
+      console.log('Message already processed');
+      return;
+    }
     const sql = 'INSERT INTO messages (sender_psid, message) VALUES (?, ?)';
     const values = [username, receivedMessage.text];
 
