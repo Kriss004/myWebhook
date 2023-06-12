@@ -19,7 +19,7 @@ import controller from './controller.js';
 import bodyParser from 'body-parser';
 import db from './database.js';
 import conn from './database.js';
-const {urlencoded, json} = bodyParser;
+const { urlencoded, json } = bodyParser;
 
 
 const app = express();
@@ -67,7 +67,7 @@ function handleMessage(senderPsid, receivedMessage) {
         console.error(error);
       });
     const sql = 'INSERT INTO messages (sender_psid, message) VALUES (?, ?)';
-    const values = [senderPsid, receivedMessage.text];
+    const values = [username, receivedMessage.text];
 
     conn.query(sql, values, (err, res) => {
       if (err) throw err;
@@ -75,9 +75,9 @@ function handleMessage(senderPsid, receivedMessage) {
       console.log('Message received and added to the database successfully!!!');
     })
   };
-  
 
-  
+
+
 
   /*if (receivedMessage.text) {
     response = {
@@ -115,35 +115,35 @@ function handleMessage(senderPsid, receivedMessage) {
     };
   }*/
 
- 
+
   //callSendAPI(senderPsid, response);
 };
 
 function handlePostback(senderPsid, receivedPostback) {
   let response;
 
- 
+
   let payload = receivedPostback.payload;
 
- 
+
   if (payload === 'yes') {
     response = { 'text': 'Thanks!' };
   } else if (payload === 'no') {
     response = { 'text': 'Oops, try sending another image.' };
   }
- 
+
   callSendAPI(senderPsid, response);
 };
 
 function callSendAPI(senderPsid, response) {
-  
+
   let requestBody = {
     'recipient': {
       'id': senderPsid
     },
     'message': response
   };
-  
+
 
   axios.post('https://graph.facebook.com/v2.6/me/messages?access_token=' + APP_TOKEN, requestBody)
     .then(() => {
@@ -152,7 +152,7 @@ function callSendAPI(senderPsid, response) {
     .catch(error => {
       console.error('Unable to send message:', error);
     });
-  
+
   /*request({
     'uri': 'https://graph.facebook.com/v2.6/me/messages',
     'qs': { 'access_token': APP_TOKEN },
@@ -174,6 +174,6 @@ export default {
   callSendAPI: callSendAPI
 };
 
-var listener = app.listen(process.env.PORT, function() {
-  console.log('Your app is listening on port ' + listener.address().port );
+var listener = app.listen(process.env.PORT, function () {
+  console.log('Your app is listening on port ' + listener.address().port);
 });

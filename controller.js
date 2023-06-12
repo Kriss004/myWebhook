@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import axios from 'axios';
 import path from 'path';
 
-const {urlencoded, json} = bodyParser;
+const { urlencoded, json } = bodyParser;
 
 
 const APP_TOKEN = process.env.APP_TOKEN;
@@ -65,7 +65,7 @@ let getWebhook = (req, res) => {
         .catch(error => {
             console.error('Failed to register webhook. Error:', error.response.data);
         });
-    
+
     axios.get(`https://graph.facebook.com/v13.0/123518010730211/subscribed_apps?access_token=${process.env.APP_TOKEN}`)
         .then(response => {
             console.log(response.data);
@@ -73,7 +73,7 @@ let getWebhook = (req, res) => {
         .catch(error => {
             console.error('Failed to get subscription. Error:', error.response.data);
         });
-    };
+};
 
 let postWebhook = (req, res) => {
 
@@ -102,7 +102,7 @@ let postWebhook = (req, res) => {
                 console.log('Message is: ' + webhookEvent.message.text);
             } else if (webhookEvent.postback) {
                 main.handlePostback(senderPsid, webhookEvent.postback);
-                console.log('Postback is:'+ webhookEvent.postback);
+                console.log('Postback is:' + webhookEvent.postback);
             }
         });
 
@@ -122,7 +122,7 @@ let privacy = (req, res) => {
     app.use(express.static('public'));
     const priv = path.join(__dirname, 'privacy.html');
     res.sendFile(priv);
-    
+
 };
 
 
