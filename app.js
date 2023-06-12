@@ -72,7 +72,7 @@ function handleMessage(senderPsid, receivedMessage) {
     if (messagecache[senderPsid + receivedMessage.text]) {
       console.log('Message already processed');
       return;
-    }
+    };
     const sql = 'INSERT INTO messages (sender_psid, message) VALUES (?, ?)';
     const values = [username, receivedMessage.text];
 
@@ -80,7 +80,8 @@ function handleMessage(senderPsid, receivedMessage) {
       if (err) throw err;
 
       console.log('Message received and added to the database successfully!!!');
-    })
+      messageCache[senderPsid + receivedMessage.text] = true;
+    });
   };
 
 
