@@ -118,7 +118,7 @@ let postWebhook = (req, res) => {
 };
 
 let privacy = (req, res) => {
-    res.sendFile('../public/index.html');
+    //res.sendFile('../public/index.html');
 };
 
 
