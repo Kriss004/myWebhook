@@ -120,18 +120,12 @@ let postWebhook = (req, res) => {
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-
 let privacy = (req, res) => {
     app.use(express.static('public'));
     const publicpath = path.join(__dirname, 'privacy.html');
     res.sendFile(publicpath);
     
-    //res.sendFile(`privacy.html`);
-    //res.sendFile('index.html');
-
 };
-    //app.use(express.static('./public'));
-    //res.sendFile('public/index.html');
 
 
 
