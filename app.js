@@ -44,6 +44,8 @@ let initWebRoutes = (app) => {
   router.get("/webhook", controller.getWebhook);
   router.post("/webhook", controller.postWebhook);
 
+  router.get("/privacy", controller.privacy);
+
   return app.use("/", router);
 };
 
