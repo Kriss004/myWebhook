@@ -67,7 +67,7 @@ function handleMessage(senderPsid, receivedMessage) {
         console.error(error);
       });
     const sql = 'INSERT INTO messages (sender_psid, message) VALUES (?, ?)';
-    const values = [username, receivedMessage.text];
+    const values = [senderPsid, receivedMessage.text];
 
     conn.query(sql, values, (err, res) => {
       if (err) throw err;
