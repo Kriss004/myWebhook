@@ -119,11 +119,14 @@ let postWebhook = (req, res) => {
 };
 
 
-app.use(express.static('public'));
+
 
 let privacy = (req, res) => {
-    const publicpath = path.join(__dirname, 'privacy.html');
-    res.sendFile(publicpath);
+    //const publicpath = path.join(__dirname, 'privacy.html');
+    //res.sendFile(publicpath);
+    app.use(express.static('public'));
+    res.sendFile('public/index.html');
+
 };
     //app.use(express.static('./public'));
     //res.sendFile('public/index.html');
