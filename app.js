@@ -55,8 +55,19 @@ function handleMessage(senderPsid, receivedMessage) {
   //let response;
 
   if (receivedMessage.text) {
+    const fields = 'name';
+    const url = `https://graph.facebook.com/v12.0/${senderPsid}?fields=${fields}&access_token=${process.env.GRAPH_ACCESS_TOKEN}`;
+    let username = '';
+    axios.get(url)
+      .then(response => {
+        const data = JSON.parse(response.data);
+        username = data.name;
+      })
+      .catch(error => {
+        console.error(error);
+      });
     const sql = 'INSERT INTO messages (sender_psid, message) VALUES (?, ?)';
-    const values = [senderPsid, receivedMessage.text];
+    const values = [username, receivedMessage.text];
 
     conn.query(sql, values, (err, res) => {
       if (err) throw err;
@@ -64,6 +75,9 @@ function handleMessage(senderPsid, receivedMessage) {
       console.log('Message received and added to the database successfully!!!');
     })
   };
+  
+
+  
 
   /*if (receivedMessage.text) {
     response = {
