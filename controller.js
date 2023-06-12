@@ -17,7 +17,7 @@ const app = express();
 app.use(json());
 app.use(urlencoded({ extended: true }));
 
-app.use(express.static('public'));
+
 
 let test = (req, res) => {
     //res.sendFile('index.ejs');
@@ -118,12 +118,16 @@ let postWebhook = (req, res) => {
 
 };
 
+
+app.use(express.static('public'));
+
 let privacy = (req, res) => {
-    //const publicpath = path.resolve(__dirname, '../public/index.html');
-    //res.sendFile(publicpath);
-    //app.use(express.static('./public'));
-    res.sendFile('public/index.html');
+    const publicpath = path.join(__dirname, 'public', 'index.html');
+    res.sendFile(publicpath);
 };
+    //app.use(express.static('./public'));
+    //res.sendFile('public/index.html');
+
 
 
 export default {
