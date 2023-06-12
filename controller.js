@@ -118,8 +118,8 @@ let postWebhook = (req, res) => {
 };
 
 let privacy = (req, res) => {
-    //res.sendFile('../public/index.html');
-    app.use(express.static('./public'));
+    res.sendFile('../public/index.html');
+    //app.use(express.static('./public'));
 };
 
 
