@@ -17,11 +17,13 @@ const app = express();
 app.use(json());
 app.use(urlencoded({ extended: true }));
 
-
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 let test = (req, res) => {
-    //res.sendFile('index.ejs');
-    res.send('Hello World!');
+    //res.send(`Welcome to my Facebook Webhook. It doesn't look like much, but it works.`);
+    app.use(express.static('public'));
+    const publicpath = path.join(__dirname, 'public', 'index.html');
+    res.sendFile(publicpath);
 };
 
 let getWebhook = (req, res) => {
@@ -75,10 +77,6 @@ let getWebhook = (req, res) => {
 
 let postWebhook = (req, res) => {
 
-
-
-    
-
     console.log(`Received a ${req.method} request for ${req.url}`);
     console.log(`Request body: ${JSON.stringify(req.body)}`);
 
@@ -118,12 +116,12 @@ let postWebhook = (req, res) => {
 
 };
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
 
 let privacy = (req, res) => {
     app.use(express.static('public'));
-    const publicpath = path.join(__dirname, 'privacy.html');
-    res.sendFile(publicpath);
+    const priv = path.join(__dirname, 'privacy.html');
+    res.sendFile(priv);
     
 };
 

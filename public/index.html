@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,93 +8,64 @@
     <link rel="stylesheet" href="style.css">
     <title>HTTPS Server</title>
 </head>
+
 <body>
 
-<main>
+    <main>
 
-    <!DOCTYPE html>
-<html>
-<head>
-	<title>Privacy Policy</title>
-</head>
-<body>
-    <h1>Privacy Policy</h1>
-    
-    <p>Your privacy is important to us. It is our policy to respect your privacy regarding any information we may collect
-        from you across our website, and other sites we own and operate.</p>
-    <br>
-    <h2>Information we collect</h2>
-    
-    <p>We only collect information about you if we have a reason to do so - for example, to provide our services, to
-        communicate with you, or to improve our services. We collect information in three ways: if and when you provide
-        information to us, automatically through operating our services, and from outside sources. Let’s go over the
-        information that we collect.</p>
-    <br>
-    <h3>Information you provide to us</h3>
-    
-    <p>We collect information about you when you input it into the Services or otherwise provide it directly to us.</p>
-    <br>
-    <h3>Information we collect automatically</h3>
-    
-    <p>We automatically collect certain information about you when you access or use our Services. This information
-        includes:</p>
-    
-    <ul>
-        <li>Log and usage data</li>
-        <li>Device data</li>
-        <!--<li>Location data</li>-->
-    </ul>
-    <br>
-    <h3>Information we collect from other sources</h3>
-    
-    <p>We may collect information about you from other sources, such as through certain features on the Services you use,
-        from other Users of the Services, from other third-party sources, or from our business and channel partners.</p>
-    
-    <h2>How we use your information</h2>
-    
-    <p>We use your information in order to provide you with the best possible experience when using our Services. This
-        includes:</p>
-    
-    <ul>
-        <li>Providing and managing your access to our Services;</li>
-        <li>Personalizing and tailoring your experience on our Services;</li>
-        <li>Developing new products, services, features, and functionality;</li>
-        <li>Communicating with you for the purpose of providing customer service and support;</li>
-        <li>Sending you important notices and updates;</li>
-        <li>Improving the content and functionality of our Services;</li>
-        <li>Conducting research and analysis to identify trends and better understand our users.</li>
-    </ul>
-    
-    <h2>How we share your information</h2>
-    
-    <p>We may share your information with third parties in certain situations, including:</p>
-    
-    <ul>
-        <li>With your consent;</li>
-        <li>To comply with applicable laws and regulations;</li>
-        <li>To respond to lawful requests and legal process;</li>
-        <li>To protect our rights and property and those of our agents, customers, and others.</li>
-    </ul>
-    
-    <h2>How we store and secure your information</h2>
-    
-    <p>We take steps to ensure that your information is treated securely and in accordance with this Privacy Policy.
-        Unfortunately, no system can be completely secure, and we cannot guarantee the security of your information.</p>
-    
-    <h2>Changes to this Privacy Policy</h2>
-    
-    <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy
-        Policy on this page.</p>
-    
-    <h2>Contact Us</h2>
-    
-    <p>If you have any questions or concerns about this Privacy Policy, please contact us at <a
-            href="info@bomamabati.co.ke">info@bomamabati.co.ke</a>.</p>
-</body>
-</html>
+        <!DOCTYPE html>
+        <html>
 
+        <head>
+            <title>Privacy Policy</title>
+            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+        </head>
 
-    <!--<h2>Facebook Messages</h2>
+        <body>
+
+            <script>
+                window.fbAsyncInit = function () {
+                    FB.init({
+                        appId: '1228012947829418',
+                        cookie: true,
+                        xfbml: true,
+                        version: 'v11.0'
+                    });
+                };
+            </script>
+
+            <fb:login-button scope="public_profile,pages_messaging" onlogin="checkLoginState();"></fb:login-button>
+
+            <script>
+                function checkLoginState() {
+                    FB.getLoginStatus(function (response) {
+                        statusChangeCallback(response);
+                    });
+                }
+
+                function statusChangeCallback(response) {
+                    console.log('statusChangeCallback');
+                    console.log(response);
+                    if (response.status === 'connected') {
+                        // Logged into your app and Facebook.
+                        testAPI();
+                    } else {
+                        // The person is not logged into your app or we are unable to tell.
+                        document.getElementById('status').innerHTML = 'Please log ' +
+                            'into this app.';
+                    }
+                }
+
+                function testAPI() {
+                    console.log('Welcome!  Fetching your information.... ');
+                    FB.api('/me', function (response) {
+                        console.log('Successful login for: ' + response.name);
+                        document.getElementById('status').innerHTML =
+                            'Thanks for logging in, ' + response.name + '!';
+                    });
+                }
+            </script>
+            <!--<h2>Facebook Messages</h2>
 
     <form action="/messages/create" method="POST">
         <div>
@@ -107,7 +79,8 @@
         <button>Send</button>
     </form>-->
 
-</main>
+    </main>
 
 </body>
+
 </html>
