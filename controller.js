@@ -4,6 +4,7 @@ import express from 'express';
 import main from './app.js';
 import bodyParser from 'body-parser';
 import axios from 'axios';
+import path from 'path';
 
 const {urlencoded, json} = bodyParser;
 
@@ -118,7 +119,8 @@ let postWebhook = (req, res) => {
 };
 
 let privacy = (req, res) => {
-    res.sendFile('../public/index.html');
+    const publicpath = path.resolve('../public/index.html');
+    res.sendFile(publicpath);
     //app.use(express.static('./public'));
 };
 
