@@ -118,7 +118,7 @@ let postWebhook = (req, res) => {
 
 };
 
-
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 
 let privacy = (req, res) => {
