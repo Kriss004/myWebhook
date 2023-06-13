@@ -81,6 +81,39 @@ function handleMessage(senderPsid, receivedMessage) {
       .catch(error => {
         console.error(error);
       });
+
+
+    // trying to put data directly into boma crm system... currently incomplete:
+    const session = axios.create({
+      baseURL: 'https://www.bomamabati.co.ke/boma/',
+    });
+
+    const loginData = {
+      username: 'chris',
+      password: 'chris@boma',
+    };
+
+    session.post('/login', loginData).then(() => {
+      // Navigate to the New Lead page
+      return session.get('/crm/createweblead.php');
+    }).then(() => {
+      
+      const leadData = {
+        name: `${username}`,
+        //email: 'john.doe@example.com',
+        //phone: '555-555-5555',
+        message: `${receivedMessage.text}`
+      };
+
+      return session.post('/crm/createweblead.php', leadData);
+    }).then(() => {
+      // Save the lead
+      return session.post('/save_lead');
+    }).then(response => {
+      console.log('Lead created successfully:', response.data);
+    }).catch(error => {
+      console.error('Error creating lead:', error);
+    });
   };
 
   /*if (receivedMessage.text) {
