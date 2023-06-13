@@ -76,7 +76,6 @@ function handleMessage(senderPsid, receivedMessage) {
 
           console.log('Message received and added to the database successfully!!!');
           messagecache[senderPsid + receivedMessage.text] = true;
-          res.status(200);
         });
       })
       .catch(error => {

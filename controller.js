@@ -107,7 +107,7 @@ let postWebhook = (req, res) => {
         });
 
         res.set('Cache-Control', 'public, max-age=12100');
-        res.status(200);
+        res.sendStatus(200);
     } else {
 
 
