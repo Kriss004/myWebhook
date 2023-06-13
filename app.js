@@ -64,28 +64,25 @@ function handleMessage(senderPsid, receivedMessage) {
       .then(response => {
         //const data = JSON.parse(response.data);
         username = response.data.name;
+        if (messagecache[senderPsid + receivedMessage.text]) {
+          console.log('Message already processed');
+          return;
+        };
+        const sql = 'INSERT INTO messages (sender_psid, message) VALUES (?, ?)';
+        const values = [username, receivedMessage.text];
+
+        conn.query(sql, values, (err, res) => {
+          if (err) throw err;
+
+          console.log('Message received and added to the database successfully!!!');
+          messagecache[senderPsid + receivedMessage.text] = true;
+          res.status(200);
+        });
       })
       .catch(error => {
         console.error(error);
       });
-
-    if (messagecache[senderPsid + receivedMessage.text]) {
-      console.log('Message already processed');
-      return;
-    };
-    const sql = 'INSERT INTO messages (sender_psid, message) VALUES (?, ?)';
-    const values = [username, receivedMessage.text];
-
-    conn.query(sql, values, (err, res) => {
-      if (err) throw err;
-
-      console.log('Message received and added to the database successfully!!!');
-      messagecache[senderPsid + receivedMessage.text] = true;
-    });
   };
-
-
-
 
   /*if (receivedMessage.text) {
     response = {
