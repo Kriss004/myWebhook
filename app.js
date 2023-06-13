@@ -58,7 +58,7 @@ function handleMessage(senderPsid, receivedMessage) {
 
   if (receivedMessage.text) {
     const fields = 'name';
-    const url = `https://graph.facebook.com/v13.0/${senderPsid}?fields=${fields}&access_token=${process.env.GRAPH_ACCESS_TOKEN}`;
+    const url = `https://graph.facebook.com/v13.0/${senderPsid}?fields=${fields}&access_token=${process.env.APP_TOKEN}`;
     let username = '';
     axios.get(url)
       .then(response => {
