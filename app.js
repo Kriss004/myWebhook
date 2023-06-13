@@ -62,8 +62,8 @@ function handleMessage(senderPsid, receivedMessage) {
     let username = '';
     axios.get(url)
       .then(response => {
-        const data = JSON.parse(response.data);
-        username = data.name;
+        //const data = JSON.parse(response.data);
+        username = response.data.name;
       })
       .catch(error => {
         console.error(error);
@@ -185,3 +185,5 @@ export default {
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
+
+listener.timeout = 120000;
