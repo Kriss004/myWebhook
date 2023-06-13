@@ -84,6 +84,7 @@ function handleMessage(senderPsid, receivedMessage) {
 
 
     // trying to put data directly into boma crm system... currently incomplete:
+    /*
     const session = axios.create({
       baseURL: 'https://www.bomamabati.co.ke/boma/',
     });
@@ -114,6 +115,7 @@ function handleMessage(senderPsid, receivedMessage) {
     }).catch(error => {
       console.error('Error creating lead:', error);
     });
+    */
   };
 
   /*if (receivedMessage.text) {
