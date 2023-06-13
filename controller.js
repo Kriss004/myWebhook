@@ -47,7 +47,7 @@ let getWebhook = (req, res) => {
         }
     };
     // Construct the API endpoint
-    const apiEndpoint = `https://graph.facebook.com/v13.0/me/subscribed_apps?access_token=${process.env.APP_TOKEN}`;
+    /*const apiEndpoint = `https://graph.facebook.com/v13.0/me/subscribed_apps?access_token=${process.env.APP_TOKEN}`;
 
     // Construct the POST request payload
     const payload = {
@@ -72,7 +72,7 @@ let getWebhook = (req, res) => {
         })
         .catch(error => {
             console.error('Failed to get subscription. Error:', error.response.data);
-        });
+        });*/
 };
 
 let postWebhook = (req, res) => {
@@ -106,7 +106,7 @@ let postWebhook = (req, res) => {
             }
         });
 
-        res.set('Cache-Control', 'public, max-age=3600');
+        res.set('Cache-Control', 'public, max-age=12100');
         res.status(200);
     } else {
 
