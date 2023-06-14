@@ -23,6 +23,18 @@ form {
     width: 50%;
     margin: 3rem auto;
 }
+fb\:login-button {
+    height: 3rem;
+    width: 80%;
+    padding: 0.5rem;
+    margin: .5rem 0;
+    border-radius: 3px;
+    border: 1px solid;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    
+}
 /*input, button {
     height: 3rem;
     width: 80%;
