@@ -7,6 +7,8 @@ import express from 'express';
 import controller from './controller.js';
 import bodyParser from 'body-parser';
 import conn from './database.js';
+import fs from 'fs';
+import mime from 'mime';
 
 const { urlencoded, json } = bodyParser;
 const { APP_TOKEN, VERIFY_TOKEN, PORT } = process.env;
@@ -109,8 +111,15 @@ export default {
   handleMessage: handleMessage,
 };
 
-var listener = app.listen(PORT, function () {
+var listener = app.listen(PORT, (req, res) => {
   console.log('Your app is listening on port ' + listener.address().port);
+  if (req.url === './public/style.css') {
+    const css = fs.readFileSync('style.css', 'utf8');
+    res.setHeader('Content-Type', mime.getType('style.css'));
+    res.end(css);
+  } else {
+    res.end('Hello World!');
+  }
 });
 
 listener.timeout = 120000;
