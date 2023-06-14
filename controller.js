@@ -3,14 +3,12 @@ dotenv.config();
 import express from 'express';
 import main from './app.js';
 import bodyParser from 'body-parser';
-import axios from 'axios';
 import path from 'path';
 
 const { urlencoded, json } = bodyParser;
 
 
-const APP_TOKEN = process.env.APP_TOKEN;
-const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
+const { APP_TOKEN, VERIFY_TOKEN, PORT } = process.env;
 
 const app = express();
 
@@ -46,33 +44,6 @@ let getWebhook = (req, res) => {
             res.sendStatus(403);
         }
     };
-    // Construct the API endpoint
-    /*const apiEndpoint = `https://graph.facebook.com/v13.0/me/subscribed_apps?access_token=${process.env.APP_TOKEN}`;
-
-    // Construct the POST request payload
-    const payload = {
-        object: 'page',
-        callback_url: 'https://bomatext.herokuapp.com/webhook',
-        subscribed_fields: ['messages', 'messaging_postbacks', 'messaging_options'],
-        verify_token: 'myverifytoken'
-    };
-
-    // Send the POST request
-    axios.post(apiEndpoint, payload)
-        .then(response => {
-            console.log('Webhook registered successfully.');
-        })
-        .catch(error => {
-            console.error('Failed to register webhook. Error:', error.response.data);
-        });
-
-    axios.get(`https://graph.facebook.com/v13.0/123518010730211/subscribed_apps?access_token=${process.env.APP_TOKEN}`)
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.error('Failed to get subscription. Error:', error.response.data);
-        });*/
 };
 
 let postWebhook = (req, res) => {
@@ -86,9 +57,6 @@ let postWebhook = (req, res) => {
         return;
     }
 
-    //let body = req.body;
-
-
     if (req.body.object === 'page') {
         req.body.entry.forEach(function (entry) {
             let webhookEvent = entry.messaging[0];
@@ -100,23 +68,17 @@ let postWebhook = (req, res) => {
             if (webhookEvent.message) {
                 main.handleMessage(senderPsid, webhookEvent.message);
                 console.log('Message is: ' + webhookEvent.message.text);
-            } else if (webhookEvent.postback) {
-                main.handlePostback(senderPsid, webhookEvent.postback);
-                console.log('Postback is:' + webhookEvent.postback);
-            }
+            };
         });
 
         res.set('Cache-Control', 'public, max-age=12100');
         res.sendStatus(200);
     } else {
 
-
         res.sendStatus(404);
     }
 
 };
-
-
 
 let privacy = (req, res) => {
     app.use(express.static('public'));
@@ -124,8 +86,6 @@ let privacy = (req, res) => {
     res.sendFile(priv);
 
 };
-
-
 
 export default {
     test: test,
