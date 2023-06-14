@@ -107,8 +107,6 @@ const handleMessage = async (senderPsid, receivedMessage) => {
 export default {
   initWebRoutes: initWebRoutes,
   handleMessage: handleMessage,
-  handlePostback: handlePostback,
-  callSendAPI: callSendAPI
 };
 
 var listener = app.listen(PORT, function () {
