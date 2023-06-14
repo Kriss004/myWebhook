@@ -1,71 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en_US">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>HTTPS Server</title>
+    <title>Facebook Login</title>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
 </head>
 
 <body>
 
     <main>
+        <div id="status"></div>
+        <fb:login-button scope="public_profile,pages_messaging" onlogin="checkLoginState();"></fb:login-button>
 
-        <!DOCTYPE html>
-        <html>
+        <script>
+            window.fbAsyncInit = function () {
+                FB.init({
+                    appId: '1228012947829418',
+                    cookie: true,
+                    xfbml: true,
+                    version: 'v11.0'
+                });
+            };
+        </script>
 
-        <head>
-            <title>Privacy Policy</title>
-            <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
-        </head>
 
-        <body>
+        <script>
+            function checkLoginState() {
+                FB.getLoginStatus(function (response) {
+                    statusChangeCallback(response);
+                });
+            }
 
-            <script>
-                window.fbAsyncInit = function () {
-                    FB.init({
-                        appId: '1228012947829418',
-                        cookie: true,
-                        xfbml: true,
-                        version: 'v11.0'
-                    });
-                };
-            </script>
-
-            <fb:login-button scope="public_profile,pages_messaging" onlogin="checkLoginState();"></fb:login-button>
-
-            <script>
-                function checkLoginState() {
-                    FB.getLoginStatus(function (response) {
-                        statusChangeCallback(response);
-                    });
+            function statusChangeCallback(response) {
+                console.log('statusChangeCallback');
+                console.log(response);
+                if (response.status === 'connected') {
+                    // Logged into your app and Facebook.
+                    testAPI();
+                } else {
+                    // The person is not logged into your app or we are unable to tell.
+                    document.getElementById('status').innerHTML = 'Please log ' +
+                        'into this app.';
                 }
+            }
 
-                function statusChangeCallback(response) {
-                    console.log('statusChangeCallback');
-                    console.log(response);
-                    if (response.status === 'connected') {
-                        // Logged into your app and Facebook.
-                        testAPI();
-                    } else {
-                        // The person is not logged into your app or we are unable to tell.
-                        document.getElementById('status').innerHTML = 'Please log ' +
-                            'into this app.';
-                    }
-                }
-
-                function testAPI() {
-                    console.log('Welcome!  Fetching your information.... ');
-                    FB.api('/me', function (response) {
-                        console.log('Successful login for: ' + response.name);
-                        document.getElementById('status').innerHTML =
-                            'Thanks for logging in, ' + response.name + '!';
-                    });
-                }
-            </script>
-            <!--<h2>Facebook Messages</h2>
+            function testAPI() {
+                console.log('Welcome!  Fetching your information.... ');
+                FB.api('/me', function (response) {
+                    console.log('Successful login for: ' + response.name);
+                    document.getElementById('status').innerHTML =
+                        'Thanks for logging in, ' + response.name + '!';
+                });
+            }
+        </script>
+        <!--<h2>Facebook Messages</h2>
 
     <form action="/messages/create" method="POST">
         <div>

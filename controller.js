@@ -6,8 +6,6 @@ import bodyParser from 'body-parser';
 import path from 'path';
 
 const { urlencoded, json } = bodyParser;
-
-
 const { APP_TOKEN, VERIFY_TOKEN, PORT } = process.env;
 
 const app = express();
@@ -17,14 +15,14 @@ app.use(urlencoded({ extended: true }));
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-let test = (req, res) => {
+const test = (req, res) => {
     //res.send(`Welcome to my Facebook Webhook. It doesn't look like much, but it works.`);
     app.use(express.static('public'));
     const publicpath = path.join(__dirname, 'public', 'index.html');
     res.sendFile(publicpath);
 };
 
-let getWebhook = (req, res) => {
+const getWebhook = (req, res) => {
 
     //const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
@@ -46,7 +44,7 @@ let getWebhook = (req, res) => {
     };
 };
 
-let postWebhook = (req, res) => {
+const postWebhook = (req, res) => {
 
     console.log(`Received a ${req.method} request for ${req.url}`);
     console.log(`Request body: ${JSON.stringify(req.body)}`);
@@ -68,7 +66,7 @@ let postWebhook = (req, res) => {
             if (webhookEvent.message) {
                 main.handleMessage(senderPsid, webhookEvent.message);
                 console.log('Message is: ' + webhookEvent.message.text);
-            };
+            }
         });
 
         res.set('Cache-Control', 'public, max-age=12100');
@@ -80,7 +78,7 @@ let postWebhook = (req, res) => {
 
 };
 
-let privacy = (req, res) => {
+const privacy = (req, res) => {
     app.use(express.static('public'));
     const priv = path.join(__dirname, 'privacy.html');
     res.sendFile(priv);

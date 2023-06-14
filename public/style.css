@@ -12,6 +12,11 @@ h2 {
     margin-top: 3rem;
 }
 main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     text-align: center;
 }
 form {
