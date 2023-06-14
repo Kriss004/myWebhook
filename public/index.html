@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Facebook Login</title>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 
 </head>
 
@@ -15,7 +14,7 @@
 
     <main>
         <div id="status"></div>
-        <fb:login-button scope="public_profile,pages_messaging" onlogin="checkLoginState();"></fb:login-button>
+        <fb:login-button scope="public_profile,pages_messaging" onlogin="checkLoginState();" data-size="large"></fb:login-button>
 
         <script>
             window.fbAsyncInit = function () {
@@ -58,6 +57,8 @@
                 });
             }
         </script>
+
+        <script async defer src="https://connect.facebook.net/en_US/sdk.js" defer></script>
         <!--<h2>Facebook Messages</h2>
 
     <form action="/messages/create" method="POST">
