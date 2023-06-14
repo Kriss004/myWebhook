@@ -7,8 +7,7 @@ import express from 'express';
 import controller from './controller.js';
 import bodyParser from 'body-parser';
 import conn from './database.js';
-import fs from 'fs';
-import mime from 'mime';
+
 
 const { urlencoded, json } = bodyParser;
 const { APP_TOKEN, VERIFY_TOKEN, PORT } = process.env;
