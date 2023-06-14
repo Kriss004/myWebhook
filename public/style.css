@@ -5,7 +5,7 @@
 }
 body {
     background: #86f17c;
-    color:rgb(51, 22, 51);
+    color:rgb(143, 16, 143);
 }
 h2 {
     text-align: center;
@@ -29,10 +29,10 @@ input, button {
     padding: 0.5rem;
     margin: .5rem 0;
     border-radius: 3px;
-    border: 1px solid #ccc;
+    border: 1px solid #af2424;
 }
 button {
     background:rgb(51, 22, 51);
-    color: #ccc;
+    color: #aa0303;
     cursor: pointer;
 }
