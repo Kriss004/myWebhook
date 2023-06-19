@@ -33,6 +33,8 @@ const initWebRoutes = (app) => {
   router.post("/webhook", controller.postWebhook);
 
   router.get("/privacy", controller.privacy);
+  router.get("/auth", controller.auth);
+  router.get("/callback", controller.callback);
 
   return app.use("/", router);
 };
@@ -41,7 +43,7 @@ initWebRoutes(app);
 
 const messagecache = {};
 
-const handleMessage = async (senderPsid, receivedMessage) => {
+const handleMessage = async (senderPsid, phone_number, receivedMessage) => {
   if (receivedMessage.text) {
     const fields = 'name';
     const url = `https://graph.facebook.com/${senderPsid}?fields=${fields}&access_token=${APP_TOKEN}`;
@@ -53,8 +55,8 @@ const handleMessage = async (senderPsid, receivedMessage) => {
         console.log('Message already processed!!!');
         return;
       };
-      const sql = 'INSERT INTO messages (sender_psid, message) VALUES (?, ?)';
-      const values = [username, receivedMessage.text];
+      const sql = 'INSERT INTO messages (name, phone_number, message) VALUES (?, ?, ?)';
+      const values = [username, phone_number, receivedMessage.text];
       conn.query(sql, values, (err, res) => {
         if (err) console.error(err);
         console.log('Message received and added to the database successfully!!!');

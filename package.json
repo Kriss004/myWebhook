@@ -23,6 +23,9 @@
     "mysql": "^2.18.1",
     "nano": "^10.1.2",
     "nginx": "^1.0.8",
+    "passport": "^0.6.0",
+    "passport-facebook": "^3.0.0",
+    "passport-facebook-token": "^4.0.0",
     "path": "^0.12.7",
     "sudo": "^1.0.3",
     "twilio": "^4.11.1"

@@ -4,6 +4,11 @@ import express from 'express';
 import main from './app.js';
 import bodyParser from 'body-parser';
 import path from 'path';
+import passport from 'passport';
+import FacebookStrategy from 'passport-facebook';
+import FacebookTokenStrategy from 'passport-facebook-token';
+import conn from './database.js';
+import { info } from 'console';
 
 const { urlencoded, json } = bodyParser;
 const { APP_TOKEN, VERIFY_TOKEN, PORT } = process.env;
@@ -12,6 +17,49 @@ const app = express();
 
 app.use(json());
 app.use(urlencoded({ extended: true }));
+
+app.use(passport.initialize());
+
+passport.use(new FacebookTokenStrategy({
+    clientID: process.env.APP_ID,
+    clientSecret: process.env.APP_SECRET,
+    callbackURL: "https://bomatext.herokuapp.com/logincallback",
+    profileFields: ['id','name', 'phone_number'],
+    passReqToCallback: true
+},
+function(req, accessToken, refreshToken, profile, done){
+    const name = profile.name;
+    const phone_number = profile.phone_number;
+    const facebook_id = profile.id;
+
+    conn.query('SELECT * FROM users WHERE phone_number = ?', [phone_number], function(err, rows, fields) {
+        if (err) { return done(err); }
+        if (rows.length > 0) {
+            const user = rows[0];
+            conn.query('UPDATE users SET facebook_id = ?, facebook_token = ? WHERE id = ?', [facebook_id, accessToken, user.id], function(err, result) {
+                if (err) { return done(err); }
+                return done(null, user);
+            });
+        } else {
+            conn.query('INSERT INTO users (name, phone_number, facebook_id, facebook_token) VALUES (?, ?, ?, ?)', [name, phone_number, facebook_id, accessToken], function(err, result) {
+                if (err) { return done(err); }
+                const userId = result.insertId;
+                const newUser = {
+                    id: userId,
+                    name: name,
+                    phone_number: phone_number,
+                    facebook_id: facebook_id,
+                    facebook_token: accessToken
+                };
+                return done(null, newUser);
+            });
+        }
+    });
+
+    res.redirect('/messenger');
+}));
+
+
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
@@ -61,10 +109,13 @@ const postWebhook = (req, res) => {
             console.log(webhookEvent);
 
             let senderPsid = webhookEvent.sender.id;
-            console.log('Sender PSID: ' + senderPsid);
+            console.log(`Sender PSID: ${senderPsid}`);
+
+            let phone_number = webhookEvent.sender.phone_number;
+            console.log(`Phone number: ${phone_number}`);
 
             if (webhookEvent.message) {
-                main.handleMessage(senderPsid, webhookEvent.message);
+                main.handleMessage(senderPsid, phone_number, webhookEvent.message);
                 console.log('Message is: ' + webhookEvent.message.text);
             }
         });
@@ -85,9 +136,32 @@ const privacy = (req, res) => {
 
 };
 
+//const auth = (passport.authenticate('facebook', {scope: ['public_profile', 'pages_messaging']}));
+
+const auth = (req, res) => {
+    passport.authenticate('facebook-token', { scope: ['public_profile', 'pages_messaging', 'pages_messaging_phone_number'], session: false }, (err, user, info) => {
+        if (err) return res.status(400).send({ message: err.message });
+        if (!user) return res.status(401).send({ message: 'Unauthorized' });
+        req.user = user;
+        res.redirect('/messenger');
+     })(req, res);
+     };
+
+
+
+/*const callback = (passport.authenticate('facebook', { failureRedirect: '/login' }), (req, res) => {
+    res.redirect('/messenger');
+});*/
+
+const callback = (passport.authenticate('facebook-token', {session: false, failureRedirect: '/login'}), (req, res) => {
+    res.redirect('/messenger');
+});
+
 export default {
     test: test,
     getWebhook: getWebhook,
     postWebhook: postWebhook,
-    privacy: privacy
+    privacy: privacy,
+    callback: callback,
+    auth: auth
 };
