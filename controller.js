@@ -56,7 +56,7 @@ function(req, accessToken, refreshToken, profile, done){
         }
     });
 
-    res.redirect('/messenger');
+    //res.redirect('/messenger');
 }));
 
 
