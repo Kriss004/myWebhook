@@ -136,8 +136,6 @@ const privacy = (req, res) => {
 
 };
 
-//const auth = (passport.authenticate('facebook', {scope: ['public_profile', 'pages_messaging']}));
-
 const auth = (req, res) => {
     passport.authenticate('facebook-token', { scope: ['public_profile', 'pages_messaging', 'pages_messaging_phone_number'], session: false }, (err, user, info) => {
         if (err) return res.status(400).send({ message: err.message });
@@ -146,12 +144,6 @@ const auth = (req, res) => {
         res.redirect('/messenger');
      })(req, res);
      };
-
-
-
-/*const callback = (passport.authenticate('facebook', { failureRedirect: '/login' }), (req, res) => {
-    res.redirect('/messenger');
-});*/
 
 const callback = (passport.authenticate('facebook-token', {session: false, failureRedirect: '/login'}), (req, res) => {
     res.redirect('/messenger');
