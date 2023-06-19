@@ -89,21 +89,43 @@
                 xfbml: true,
                 version: 'v12.0'
             });
-        };
-
-        function login() {
-            FB.login(function (response) {
-                if (response.authResponse) {
-                    // User is logged in and granted permissions
-                    console.log(response.authResponse.accessToken);
+            FB.getLoginStatus(function (response) {
+                if (response.status === 'connected') {
+                    console.log(`User is already logged in with access token: ${response.authResponse.accessToken}`);
                     // Redirect to your messenger page
                     //window.location.href = 'https://www.facebook.com/messages/t/123518010730211/';
                     window.location.href = '/auth?access_token=' + response.authResponse.accessToken;
                 } else {
-                    // User cancelled login or did not grant permission
-                    console.log('User cancelled login or did not fully authorize.');
+                    console.log('User is not logged in to Facebook.');
                 }
-            }, { scope: 'public_profile, pages_messaging, pages_messaging_phone_number' });
+            });
+        };
+
+        
+
+        function login() {
+            FB.getLoginStatus(function (response) {
+                if (response.status === 'connected') {
+                    console.log(`User is already logged in with access token: ${response.authResponse.accessToken}`);
+                    // Redirect to your messenger page
+                    //window.location.href = 'https://www.facebook.com/messages/t/123518010730211/';
+                    window.location.href = '/auth?access_token=' + response.authResponse.accessToken;
+                } else {
+                    console.log('User is not logged in to Facebook, prompting login...');
+                    FB.login(function (response) {
+                        if (response.authResponse) {
+                            // User is logged in and granted permissions
+                            console.log(response.authResponse.accessToken);
+                            // Redirect to your messenger page
+                            //window.location.href = 'https://www.facebook.com/messages/t/123518010730211/';
+                            window.location.href = '/auth?access_token=' + response.authResponse.accessToken;
+                        } else {
+                            // User cancelled login or did not grant permission
+                            console.log('User cancelled login or did not fully authorize.');
+                        }
+                    }, { scope: 'public_profile, pages_messaging, pages_messaging_phone_number' });
+                }
+            });
         }
 
         (function (d, s, id) {
