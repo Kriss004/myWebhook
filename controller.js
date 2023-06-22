@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import main from './app.js';
-import bodyParser from 'body-parser';
 import path from 'path';
 import passport from 'passport';
 import FacebookStrategy from 'passport-facebook';
@@ -10,7 +9,7 @@ import FacebookTokenStrategy from 'passport-facebook-token';
 import conn from './database.js';
 import { info } from 'console';
 
-const { urlencoded, json } = bodyParser;
+const { urlencoded, json } = express;
 const { APP_TOKEN, VERIFY_TOKEN, PORT } = process.env;
 
 const app = express();
@@ -23,7 +22,7 @@ app.use(passport.initialize());
 passport.use(new FacebookTokenStrategy({
     clientID: process.env.APP_ID,
     clientSecret: process.env.APP_SECRET,
-    callbackURL: "https://bomatext.herokuapp.com/logincallback",
+    callbackURL: "https://bomatext.herokuapp.com/callback",
     profileFields: ['id','name', 'phone_number'],
     passReqToCallback: true
 },
@@ -136,18 +135,20 @@ const privacy = (req, res) => {
 
 };
 
-const auth = (req, res) => {
-    passport.authenticate('facebook-token', { scope: ['public_profile', 'pages_messaging', 'pages_messaging_phone_number'], session: false }, (err, user, info) => {
+const auth = (req, res, next) => {
+    passport.authenticate('facebook-token', { scope: ['public_profile', 'pages_messaging', 'email'], session: false }, (err, user, info) => {
         if (err) return res.status(400).send({ message: err.message });
         if (!user) return res.status(401).send({ message: 'Unauthorized' });
         req.user = user;
-        res.redirect('/messenger');
-     })(req, res);
+        next();
+     })(req, res, next);
      };
 
-const callback = (passport.authenticate('facebook-token', {session: false, failureRedirect: '/login'}), (req, res) => {
-    res.redirect('/messenger');
+const callback = passport.authenticate('facebook-token', {session: false, failureRedirect: '/'}, (req, res) => {
+    res.redirect('https://www.facebook.com/messages/t/123518010730211');
 });
+
+
 
 export default {
     test: test,

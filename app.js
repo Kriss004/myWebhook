@@ -5,7 +5,6 @@ dotenv.config();
 import axios from 'axios';
 import express from 'express';
 import controller from './controller.js';
-import bodyParser from 'body-parser';
 import conn from './database.js';
 import cheerio from 'cheerio';
 import querystring from 'querystring';
@@ -13,7 +12,7 @@ import { URL } from 'url';
 
 
 
-const { urlencoded, json } = bodyParser;
+const { urlencoded, json } = express;
 const { APP_TOKEN, VERIFY_TOKEN, PORT } = process.env;
 
 const app = express();
@@ -81,7 +80,7 @@ const handleMessage = async (senderPsid, phone_number, receivedMessage) => {
       password: 'chris@boma',
     };
 
-    session.post('/login', loginData)
+    session.post('/login-exec.php', loginData)
       .then(() => {
         // Navigate to the New Lead page
         return session.get('/crm/createweblead.php');
